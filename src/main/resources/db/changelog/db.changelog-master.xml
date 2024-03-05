@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <include file="/db.stations.xml" relativeToChangelogFile="true" />
+<!--    <changeSet id="0" author="Nikita">-->
+<!--        <createTable tableName="users">-->
+<!--            <column name="id" type="serial">-->
+<!--                <constraints primaryKey="true" primaryKeyName="users_seq" />-->
+<!--            </column>-->
+<!--            <column name="first_name" type="text" />-->
+<!--            <column name="last_name" type="text" />-->
+<!--            <column name="nickname" type="text">-->
+<!--                <constraints nullable="false" unique="true" uniqueConstraintName="nickname_uniq" />-->
+<!--            </column>-->
+<!--            <column name="password" type="text" />-->
+<!--        </createTable>-->
+<!--    </changeSet>-->
+</databaseChangeLog>
