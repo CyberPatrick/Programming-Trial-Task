@@ -16,4 +16,7 @@
             <column name="timestamp" type="date" />
         </createTable>
     </changeSet>
+    <changeSet id="1" author="Nikita">
+        <modifyDataType tableName="Stations" columnName="timestamp" newDataType="timestamp" />
+    </changeSet>
 </databaseChangeLog>
