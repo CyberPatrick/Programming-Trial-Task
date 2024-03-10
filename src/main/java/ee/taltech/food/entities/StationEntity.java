@@ -32,6 +32,6 @@ public class StationEntity {
     private Float windSpeed;
     @Column
     private String phenomenon;
-    @Column
+    @Column(nullable = false)
     private Date timestamp;
 }

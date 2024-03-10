@@ -19,4 +19,7 @@
     <changeSet id="1" author="Nikita">
         <modifyDataType tableName="Stations" columnName="timestamp" newDataType="timestamp" />
     </changeSet>
+    <changeSet id="2" author="Nikita">
+        <addNotNullConstraint tableName="Stations" columnName="timestamp" />
+    </changeSet>
 </databaseChangeLog>
