@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.Date;
+import java.util.Objects;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -16,12 +17,14 @@ public class GlobalExceptionHandler {
 
         ErrorObject error = new ErrorObject();
         error.setTimestamp(new Date());
-        System.out.println(ex);
         if (ex instanceof ServiceError) {
             error.setMessage(ex.getMessage());
-//            log.error("Service error", ex);
-        } else if (ex instanceof MethodArgumentTypeMismatchException) {
-            error.setMessage("Argument type mismatch - " + ((MethodArgumentTypeMismatchException) ex).getRootCause().getMessage());
+        } else if (ex instanceof MethodArgumentTypeMismatchException methodArgumentTypeMismatchException) {
+            if (Objects.nonNull(methodArgumentTypeMismatchException.getRootCause())) {
+                error.setMessage("Argument type mismatch - " + methodArgumentTypeMismatchException.getRootCause().getMessage());
+            } else {
+                error.setMessage("Argument type mismatch");
+            }
         } else if (ex instanceof MissingServletRequestParameterException) {
             error.setMessage("Argument is missing");
         } else {

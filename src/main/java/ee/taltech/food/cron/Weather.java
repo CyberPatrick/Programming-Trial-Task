@@ -7,8 +7,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -31,8 +29,5 @@ public class Weather {
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document doc = db.parse(new URL(API_URL).openStream());
         repository.saveAll(mapper.convertXmlDocToEntities(doc));
-        System.out.println(repository.findAll());
     }
-
-//    private void saveWeatherDataToDb(Document doc)
 }

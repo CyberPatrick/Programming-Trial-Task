@@ -5,18 +5,27 @@ import ee.taltech.food.errors.ServiceError;
 import ee.taltech.food.forms.City;
 import ee.taltech.food.forms.VehicleType;
 import ee.taltech.food.repositories.StationRepository;
+
+import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class DeliveryService {
     private final StationRepository repository;
 
-    public Double getDeliveryFee(City city, VehicleType vehicleType) throws ServiceError {
-        StationEntity station = repository.findFirstByNameContainingIgnoreCaseOrderByTimestampDesc(city);
+    public Double getDeliveryFee(City city, VehicleType vehicleType, @Nullable Date date) throws ServiceError {
+        Optional<StationEntity> stationOpt;
+        if (Objects.isNull(date)) stationOpt =  repository.findFirstByNameContainingIgnoreCaseOrderByTimestampDesc(city);
+        else stationOpt = repository.findFirstByNameContainingIgnoreCaseAndTimestampBeforeOrderByTimestampDesc(city, date);
+
+        if (stationOpt.isEmpty()) throw new ServiceError("No weather data to calculate fee");
+        StationEntity station = stationOpt.get();
         return city.getRBF(vehicleType)
                 + getATEF(station, vehicleType)
                 + getWSEF(station, vehicleType)
