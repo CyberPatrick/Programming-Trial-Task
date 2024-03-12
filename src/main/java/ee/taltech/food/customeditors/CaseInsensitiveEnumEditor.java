@@ -1,4 +1,4 @@
-package ee.taltech.food.customEditors;
+package ee.taltech.food.customeditors;
 
 import java.beans.PropertyEditorSupport;
 

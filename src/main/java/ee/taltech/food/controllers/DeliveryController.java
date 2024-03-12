@@ -1,6 +1,6 @@
 package ee.taltech.food.controllers;
 
-import ee.taltech.food.customEditors.CaseInsensitiveEnumEditor;
+import ee.taltech.food.customeditors.CaseInsensitiveEnumEditor;
 import ee.taltech.food.errors.ServiceError;
 import ee.taltech.food.forms.City;
 import ee.taltech.food.forms.VehicleType;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @AllArgsConstructor
