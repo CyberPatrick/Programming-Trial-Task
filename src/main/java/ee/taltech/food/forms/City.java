@@ -12,6 +12,11 @@ public enum City {
     private final double feeForScooter;
     private final double feeForBike;
 
+    /**
+     * Get regional base fee (RBF) based on vehicle type.
+     * @param vehicleType Transport used for delivery.
+     * @return
+     */
     public double getRBF(VehicleType vehicleType) {
         switch (vehicleType) {
             case Car:

@@ -26,6 +26,16 @@ import java.util.Date;
 public class DeliveryController {
     private final DeliveryService deliveryService;
 
+    /**
+     * Return delivery fee for given city and vehicle type, also, if given, calculate fee based on weather conditions,
+     * which were valid at the specific time.
+     * @param city City of delivery.
+     * @param vehicleType Transport used for delivery.
+     * @param date Optional. Calculate fee based on weather conditions at specific time.
+     * @return Calculated fee based on weather conditions and business rules.
+     * @throws ServiceError If given args combination violates business rules (e.g. bike and wind speed > 20m/s.),
+     * no weather data.
+     */
     @GetMapping("fee")
     public ResponseEntity<Double> getDeliveryFee(@RequestParam @NonNull City city,
                                                  @RequestParam @NonNull VehicleType vehicleType,
@@ -35,6 +45,10 @@ public class DeliveryController {
         return new ResponseEntity<>(deliveryService.getDeliveryFee(city, vehicleType, date), HttpStatus.OK);
     }
 
+    /**
+     * To handle enum params ignoring case, example: bike, BiKE, BIKE - should match the VehicleType.Bike
+     * @param binder
+     */
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(City.class, new CaseInsensitiveEnumEditor(City.class));

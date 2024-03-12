@@ -22,8 +22,13 @@ public class Weather {
     private final StationRepository repository;
     private final StationMapper mapper;
 
-//    @Scheduled(cron = "15 * * * *")
-    @Scheduled(fixedDelay = 10 * 60 * 1000, initialDelay = 0)
+    /**
+     * Get weather date once every hour, 15 minutes after a full hour (HH:15:00)
+     * @throws IOException
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     */
+    @Scheduled(cron = "15 * * * *")
     public void getWeatherData() throws IOException, ParserConfigurationException, SAXException {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();

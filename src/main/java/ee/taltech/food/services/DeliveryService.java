@@ -19,6 +19,16 @@ import java.util.Optional;
 public class DeliveryService {
     private final StationRepository repository;
 
+    /**
+     * Return delivery fee for given city and vehicle type, also, if given, calculate fee based on weather conditions,
+     * which were valid at the specific time.
+     * @param city City of delivery.
+     * @param vehicleType Vehicle that deliver.
+     * @param date Optional. Calculate fee based on weather conditions at specific time.
+     * @return Calculated fee based on weather conditions and business rules.
+     * @throws ServiceError If given args combination violates business rules (e.g. bike and wind speed > 20m/s.),
+     * no weather data.
+     */
     public Double getDeliveryFee(City city, VehicleType vehicleType, @Nullable Date date) throws ServiceError {
         Optional<StationEntity> stationOpt;
         if (Objects.isNull(date)) stationOpt =  repository.findFirstByNameContainingIgnoreCaseOrderByTimestampDesc(city);
@@ -32,6 +42,12 @@ public class DeliveryService {
                 + getWPEF(station, vehicleType);
     }
 
+    /**
+     * Calculate extra fee based on air temperature (ATEF).
+     * @param station The parameter shows which station to take weather data from.
+     * @param vehicleType Transport used for delivery.
+     * @return Calculated extra fee, can be zero.
+     */
     private float getATEF(StationEntity station, VehicleType vehicleType) {
         if (!vehicleType.equals(VehicleType.Car) && Objects.nonNull(station.getAirTemperature())) {
             if (station.getAirTemperature() < -10) {
@@ -42,7 +58,14 @@ public class DeliveryService {
         }
         return 0;
     }
-
+    /**
+     * Calculate extra fee based on wind speed (WSEF).
+     * @param station The parameter shows which station to take weather data from.
+     * @param vehicleType Transport used for delivery.
+     * @return Calculated extra fee, can be zero.
+     * @throws ServiceError Throws error if according to weather conditions and business rules,
+     * selected transport usage is forbidden.
+     */
     private float getWSEF(StationEntity station, VehicleType vehicleType) throws ServiceError {
         if (vehicleType.equals(VehicleType.Bike) && Objects.nonNull(station.getWindSpeed())) {
             if (station.getWindSpeed() > 20) {
@@ -53,7 +76,14 @@ public class DeliveryService {
         }
         return 0;
     }
-
+    /**
+     * Calculate extra fee based on weather phenomenon (WPEF).
+     * @param station The parameter shows which station to take weather data from.
+     * @param vehicleType Transport used for delivery.
+     * @return Calculated extra fee, can be zero.
+     * @throws ServiceError Throws error if according to weather conditions and business rules,
+     * selected transport usage is forbidden.
+     */
     private float getWPEF(StationEntity station, VehicleType vehicleType) throws ServiceError {
         if (!vehicleType.equals(VehicleType.Car) && Objects.nonNull(station.getPhenomenon())) {
             if (station.getPhenomenon().contains("snow") || station.getPhenomenon().contains("sleet")) {

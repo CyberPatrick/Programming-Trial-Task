@@ -33,6 +33,7 @@ public abstract class StationMapper {
 
             if (node.getNodeType() == Node.ELEMENT_NODE) {
                 Element station = (Element) node;
+
                 String stationName = parseField(
                         station.getElementsByTagName("name").item(0).getTextContent(), String.class);
                 if (Objects.isNull(stationName)) continue;
