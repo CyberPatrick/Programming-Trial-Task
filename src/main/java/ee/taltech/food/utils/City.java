@@ -1,4 +1,4 @@
-package ee.taltech.food.forms;
+package ee.taltech.food.utils;
 
 import lombok.AllArgsConstructor;
 

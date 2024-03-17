@@ -2,8 +2,8 @@ package ee.taltech.food.controllers;
 
 import ee.taltech.food.customeditors.CaseInsensitiveEnumEditor;
 import ee.taltech.food.errors.ServiceError;
-import ee.taltech.food.forms.City;
-import ee.taltech.food.forms.VehicleType;
+import ee.taltech.food.utils.City;
+import ee.taltech.food.utils.VehicleType;
 import ee.taltech.food.services.DeliveryService;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -38,7 +38,7 @@ public class DeliveryController {
     @GetMapping("fee")
     public ResponseEntity<Double> getDeliveryFee(@RequestParam @NonNull City city,
                                                  @RequestParam @NonNull VehicleType vehicleType,
-                                                 @RequestParam(required = false) @NonNull
+                                                 @RequestParam(required = false)
                                                      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date date)
             throws ServiceError {
         return new ResponseEntity<>(deliveryService.getDeliveryFee(city, vehicleType, date), HttpStatus.OK);
