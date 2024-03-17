@@ -30,7 +30,6 @@ public class Weather {
     @Scheduled(cron = "* 15 * * * *")
     public void getWeatherData() throws IOException, ParserConfigurationException, SAXException {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        dbf.setFeature("https://apache.org/xml/features/disallow-doctype-decl", true);
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document doc = db.parse(new URL(API_URL).openStream());
         repository.saveAll(mapper.convertXmlDocToEntities(doc));
