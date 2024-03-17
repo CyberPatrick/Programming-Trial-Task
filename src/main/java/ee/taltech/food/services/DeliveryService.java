@@ -2,8 +2,8 @@ package ee.taltech.food.services;
 
 import ee.taltech.food.entities.StationEntity;
 import ee.taltech.food.errors.ServiceError;
-import ee.taltech.food.forms.City;
-import ee.taltech.food.forms.VehicleType;
+import ee.taltech.food.utils.City;
+import ee.taltech.food.utils.VehicleType;
 import ee.taltech.food.repositories.StationRepository;
 
 import jakarta.annotation.Nullable;
@@ -48,12 +48,12 @@ public class DeliveryService {
      * @param vehicleType Transport used for delivery.
      * @return Calculated extra fee, can be zero.
      */
-    private float getATEF(StationEntity station, VehicleType vehicleType) {
+    private double getATEF(StationEntity station, VehicleType vehicleType) {
         if (!vehicleType.equals(VehicleType.Car) && Objects.nonNull(station.getAirTemperature())) {
             if (station.getAirTemperature() < -10) {
-                return  1;
+                return  1d;
             } else if (-10 <= station.getAirTemperature() && station.getAirTemperature() <= 0) {
-                return 0.5f;
+                return 0.5d;
             }
         }
         return 0;
@@ -66,12 +66,12 @@ public class DeliveryService {
      * @throws ServiceError Throws error if according to weather conditions and business rules,
      * selected transport usage is forbidden.
      */
-    private float getWSEF(StationEntity station, VehicleType vehicleType) throws ServiceError {
+    private double getWSEF(StationEntity station, VehicleType vehicleType) throws ServiceError {
         if (vehicleType.equals(VehicleType.Bike) && Objects.nonNull(station.getWindSpeed())) {
-            if (station.getWindSpeed() > 20) {
+            if (station.getWindSpeed() > 20f) {
                 throw new ServiceError("Usage of selected vehicle type is forbidden");
-            } else if (10 <= station.getAirTemperature() && station.getAirTemperature() <= 20) {
-                return 0.5f;
+            } else if (10f <= station.getAirTemperature() && station.getAirTemperature() <= 20f) {
+                return 0.5d;
             }
         }
         return 0;
@@ -84,12 +84,12 @@ public class DeliveryService {
      * @throws ServiceError Throws error if according to weather conditions and business rules,
      * selected transport usage is forbidden.
      */
-    private float getWPEF(StationEntity station, VehicleType vehicleType) throws ServiceError {
+    private double getWPEF(StationEntity station, VehicleType vehicleType) throws ServiceError {
         if (!vehicleType.equals(VehicleType.Car) && Objects.nonNull(station.getPhenomenon())) {
             if (station.getPhenomenon().contains("snow") || station.getPhenomenon().contains("sleet")) {
-                return 1;
+                return 1d;
             } else if (station.getPhenomenon().contains("rain")) {
-                return 0.5f;
+                return 0.5d;
             } else if (station.getPhenomenon().equals("Glaze")
                     || station.getPhenomenon().equals("Hail")
                     || station.getPhenomenon().contains("Thunder")) {
