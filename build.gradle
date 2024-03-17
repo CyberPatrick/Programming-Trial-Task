@@ -31,7 +31,12 @@ dependencies {
     implementation 'org.mapstruct:mapstruct:1.5.3.Final'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
     implementation 'org.liquibase:liquibase-core'
+
+    testImplementation 'junit:junit'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.10.0'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.mockito:mockito-core:5.8.0'
+    testImplementation 'org.springframework.boot:spring-boot-starter-validation'
 }
 
 tasks.named('test') {

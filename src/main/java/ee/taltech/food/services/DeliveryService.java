@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -52,7 +53,7 @@ public class DeliveryService {
         if (!vehicleType.equals(VehicleType.Car) && Objects.nonNull(station.getAirTemperature())) {
             if (station.getAirTemperature() < -10) {
                 return  1d;
-            } else if (-10 <= station.getAirTemperature() && station.getAirTemperature() <= 0) {
+            } else if (-10f <= station.getAirTemperature() && station.getAirTemperature() <= 0f) {
                 return 0.5d;
             }
         }
@@ -70,7 +71,7 @@ public class DeliveryService {
         if (vehicleType.equals(VehicleType.Bike) && Objects.nonNull(station.getWindSpeed())) {
             if (station.getWindSpeed() > 20f) {
                 throw new ServiceError("Usage of selected vehicle type is forbidden");
-            } else if (10f <= station.getAirTemperature() && station.getAirTemperature() <= 20f) {
+            } else if (10f <= station.getWindSpeed() && station.getWindSpeed() <= 20f) {
                 return 0.5d;
             }
         }
@@ -86,13 +87,14 @@ public class DeliveryService {
      */
     private double getWPEF(StationEntity station, VehicleType vehicleType) throws ServiceError {
         if (!vehicleType.equals(VehicleType.Car) && Objects.nonNull(station.getPhenomenon())) {
-            if (station.getPhenomenon().contains("snow") || station.getPhenomenon().contains("sleet")) {
+            if (station.getPhenomenon().toLowerCase(Locale.ROOT).contains("snow")
+                    || station.getPhenomenon().toLowerCase(Locale.ROOT).contains("sleet")) {
                 return 1d;
-            } else if (station.getPhenomenon().contains("rain")) {
+            } else if (station.getPhenomenon().toLowerCase(Locale.ROOT).contains("rain")) {
                 return 0.5d;
-            } else if (station.getPhenomenon().equals("Glaze")
-                    || station.getPhenomenon().equals("Hail")
-                    || station.getPhenomenon().contains("Thunder")) {
+            } else if (station.getPhenomenon().toLowerCase(Locale.ROOT).equals("glaze")
+                    || station.getPhenomenon().toLowerCase(Locale.ROOT).equals("hail")
+                    || station.getPhenomenon().toLowerCase(Locale.ROOT).contains("thunder")) {
                 throw new ServiceError("Usage of selected vehicle type is forbidden");
             }
         }
