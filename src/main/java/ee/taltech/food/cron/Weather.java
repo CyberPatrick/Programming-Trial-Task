@@ -27,7 +27,7 @@ public class Weather {
      * @throws ParserConfigurationException
      * @throws SAXException
      */
-    @Scheduled(cron = "15 * * * *")
+    @Scheduled(cron = "* 15 * * * *")
     public void getWeatherData() throws IOException, ParserConfigurationException, SAXException {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setFeature("https://apache.org/xml/features/disallow-doctype-decl", true);
